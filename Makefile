@@ -1,30 +1,22 @@
+
 NAME = solitary
 
 CC = gcc
+CFLAGS = -Wall -Wextra -Werror -g -I/usr/include
 
-CFLAGS = -Wall -Wextra -Werror -g
-
-MLX_PATH = mlx_linux/
-
-MLX_LIB = $(MLX_PATH)libmlx.a
-
-MLX_FLAGS =  -Lmlx_linux -lmlx_Linux -Imlx_linux -lXext -lX11 -lm -lz
-
-LIBFT_PATH = libft/
-
-LIBFT_LIB = $(LIBFT_PATH)libft.a
+# MLX Library Configuration
+MLX_PATH = /usr/lib/
+MLX_LIB = -L$(MLX_PATH) -lmlx -lm -lz -lX11 -lXext -lXrandr -lXinerama -lXi -lXcursor
+MLX_INC = -I/usr/include
 
 SRC = main.c
-
 OBJ = $(SRC:.c=.o)
 
+# Colors for output
 GREEN = \033[1;32m
-CYAN = \033[1;36m
-YELLOW = \033[1;33m
 RESET = \033[0m
 
-# Règles
-all: subsystems header $(NAME)
+all: header $(NAME)
 
 header:
 	@echo "$(GREEN)"
@@ -36,24 +28,19 @@ header:
 	@echo "\`------'\`------'\`------'\`------'\`------'\`------'\`------'\`------'"
 	@echo "$(RESET)"
 
-%.o: %.c
-	$(CC) $(CFLAGS) -Imlx_linux -O3 -c -o $@ $<
-
-subsystems:
-	@make -C $(MLX_PATH) all
-	@make -C $(LIBFT_PATH) all
-
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(MLX_FLAGS) $(OBJ) $(MLX_LIB) $(LIBFT_LIB) -o $(NAME)
+	@echo "$(GREEN)Building $(NAME)...$(RESET)"
+	$(CC) $(CFLAGS) $(OBJ) $(MLX_LIB) -o $(NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(MLX_INC) -c $< -o $@
 
 clean:
-	make -C $(MLX_PATH) clean
-	make -C $(LIBFT_PATH) clean
+	@echo "$(GREEN)Cleaning up...$(RESET)"
 	rm -f $(OBJ)
 
 fclean: clean
-	make -C $(MLX_PATH) fclean
-	make -C $(LIBFT_PATH) fclean
+	@echo "$(GREEN)Removing $(NAME)...$(RESET)"
 	rm -f $(NAME)
 
 re: fclean all

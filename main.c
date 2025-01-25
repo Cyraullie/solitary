@@ -1,8 +1,18 @@
 
-#include "solitary.h"
+#include "mlx.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-int	main(void)
+int main()
 {
-	printf("prout");
-	return 0;
+    void *mlx;
+
+    mlx = mlx_init();
+    if (!mlx)
+    {
+        printf("Failed to initialize MLX\n");
+        return 1;
+    }
+    printf("MLX initialized successfully!\n");
+    return 0;
 }
