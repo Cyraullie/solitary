@@ -6,7 +6,7 @@
 /*   By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:45:09 by cgoldens          #+#    #+#             */
-/*   Updated: 2025/01/26 15:31:23 by cgoldens         ###   ########.fr       */
+/*   Updated: 2025/01/26 15:37:02 by cgoldens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,10 +136,19 @@ void	init_img(t_var **var)
 	init_spade(var);
 }
 
+int	check_tab(int *tab, int nb)
+{
+	int	i;
+
+	i = -1;
+	
+}
+
 void	init(t_var *var)
 {
 	int	type;
 	int	card;
+	int tab[52];
 	var->card_height = 144;
 	var->card_length = 96;
 	var->screen_height = 144;
@@ -155,6 +164,9 @@ void	init(t_var *var)
 while (i < 12)
 {
 	rng = rand() % 52;
+
+	tab[i] = rng;
+	tab[i + 1] = -1;
 	type = (rng / 13);
 	card = (rng % 14);
 	printf("nb_rand:%d\ntype:%d\ncard:%d\n", rng, type, card);
