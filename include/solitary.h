@@ -1,10 +1,10 @@
 #ifndef SOLITARY_H
 # define SOLITARY_H
 
-# include "mlx.h"
+# include "../minilibx-linux/mlx.h"
+# include "../libft/libft.h"
 # include <stdlib.h>
 # include <stdio.h>
-# include "libft/libft.h"
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/types.h>

@@ -1,32 +1,33 @@
-NAME = solitary
+NAME		= solitary
 
-CC = gcc
+CC			= gcc
+CFLAGS		= -Wextra -Wall -Werror -g 
 
-CFLAGS = -Wall -Wextra -Werror -g
+LIBFTDIR	= libft/
+LIBFT		= $(LIBFTDIR)libft.a
+MLXDIR		= minilibx-linux/
+MLX			= $(MLXDIR)libmlx.a
 
-MLX_PATH = mlx_linux/
+INCLUDES	= include/solitary.h
+SRCDIR		= srcs/
+OBJDIR		= objs/
 
-MLX_LIB = $(MLX_PATH)libmlx.a
-
-MLX_FLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux \
-            -lX11 -lXext -lXrandr -lXrender -lm -lz -Wl,--no-as-needed
-
-LIBFT_PATH = libft/
-
-LIBFT_LIB = $(LIBFT_PATH)libft.a
-
-SRC = main.c
-
-INCLUDES = -Imlx -Ilibft
-
-OBJ = $(SRC:.c=.o)
+SRCS		= $(addprefix $(SRCDIR), main.c)
+OBJS 		= $(SRCS:$(SRCDIR)%.c=$(OBJDIR)%.o)
 
 # Colors for output
-GREEN = \033[1;32m
-RESET = \033[0m
+END		:= \033[0m
+WHITE	:= \033[1;37m
+NC		:= \033[0m
+PINK	:= \033[1;35m
+GREEN	:= \033[32m
+BOLD	:= \033[1m
+L_PURPLE:= \033[38;5;55m
+YELLOW	:= \033[33m
+BLUE	:= \033[34m
 
 # Règles
-all: subsystems header $(NAME)
+all: ${NAME} $(LIBFT) $(MLX) header
 
 header:
 	@echo "$(GREEN)"
@@ -38,31 +39,37 @@ header:
 	@echo "\------'\------'\------'\------'\------'\------'\------'\------'"
 	@echo "$(RESET)"
 
-re: fclean all
+$(NAME): $(OBJS) $(INCLUDES) $(MLX) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) -L$(MLXDIR) -lmlx -L$(LIBFTDIR) -lft -lXext -lX11 -lm -lbsd -o $(NAME)
 
-.PHONY: all clean fclean re
+$(OBJDIR)%.o: $(SRCDIR)%.c
+	@mkdir $(OBJDIR)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-%.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES)  -I/usr/include -Imlx_linux -O3 -c -o $@ $<
+$(LIBFT):
+	make -C $(LIBFTDIR)
 
-subsystems:
-	@make -C $(MLX_PATH) all
-	@make -C $(LIBFT_PATH) all
+$(MLX):
+	make -C $(MLXDIR)
 
-$(NAME): $(OBJ)
-	@echo "$(GREEN)Building $(NAME)...$(RESET)"
-	$(CC) $(CFLAGS) $(MLX_FLAGS) $(OBJ) $(MLX_LIB) $(LIBFT_LIB) -o $(NAME)
+
+${OBJDIR}/%.o: %.c | ${OBJDIR}
+	@$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE)+1))))
+	@printf "${BOLD}${L_PURPLE}⚡ [%2d/%2d] Compiling: %-20s ${END}" $(CURRENT_FILE) $(TOTAL_FILES) "$<"
+	@${CC} ${CFLAGS} -I./minilibx_linux -c $< -o $@
+	@echo "${BOLD}${GREEN}✓${END}"
 
 clean:
-	@echo "$(GREEN)Cleaning up...$(RESET)"
-	make -C $(MLX_PATH) clean
-	make -C $(LIBFT_PATH) clean
-	rm -f $(OBJ)
+	@echo "${BOLD}${YELLOW}🧹 Cleaning objects...${END}"
+	@rm -rf ${OBJDIR}
+	@${MAKE} -C ./libft/ clean
+	@echo "${BOLD}${GREEN}✓ Clean complete${END}"
 
 fclean: clean
-	@echo "$(GREEN)Removing $(NAME)...$(RESET)" 
-	make -C $(LIBFT_PATH) fclean
-	rm -f $(NAME)
+	@echo "${BOLD}${YELLOW}🗑️  Deep cleaning...${END}"
+	@rm -f ${NAME}
+	@${MAKE} -C ./libft/ fclean
+	@echo "${BOLD}${GREEN}✨ All clean ✨${END}"
 
 re: fclean all
 
