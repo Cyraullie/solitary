@@ -43,7 +43,7 @@ $(NAME): $(OBJS) $(INCLUDES) $(MLX) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) -L$(MLXDIR) -lmlx -L$(LIBFTDIR) -lft -lXext -lX11 -lm -lbsd -o $(NAME)
 
 $(OBJDIR)%.o: $(SRCDIR)%.c
-	@mkdir $(OBJDIR)
+	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(LIBFT):
