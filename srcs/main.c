@@ -6,7 +6,7 @@
 /*   By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:45:09 by cgoldens          #+#    #+#             */
-/*   Updated: 2025/01/26 15:05:36 by cgoldens         ###   ########.fr       */
+/*   Updated: 2025/01/26 15:31:23 by cgoldens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,49 @@ void	init_img(t_var **var)
 
 void	init(t_var *var)
 {
+	int	type;
+	int	card;
 	var->card_height = 144;
 	var->card_length = 96;
 	var->screen_height = 144;
 	var->screen_length = 1600;
 	init_img(&var);
 	//add_floor(var, GREEN);
-	int	i;
+
+	int i;
+	int rng;
+	
+	i = 0;
+    srand(time(NULL));
+while (i < 12)
+{
+	rng = rand() % 52;
+	type = (rng / 13);
+	card = (rng % 14);
+	printf("nb_rand:%d\ntype:%d\ncard:%d\n", rng, type, card);
+	if (type == 0)
+		mlx_put_image_to_window(var->mlx, var->win, var->spade[card]->img, (card * (var->card_length + 20)), 0);
+	if (type == 1)
+		mlx_put_image_to_window(var->mlx, var->win, var->heart[card]->img, (card * (var->card_length + 20)),  (1 * (var->card_length + 50)));
+	if (type == 2)
+		mlx_put_image_to_window(var->mlx, var->win, var->club[card]->img, (card * (var->card_length + 20)),  (2 * (var->card_length + 50)));
+	if (type == 3)
+		mlx_put_image_to_window(var->mlx, var->win, var->diams[card]->img, (card * (var->card_length + 20)),  (3 * (var->card_length + 50)));
+	//TODO checker si le rng et tomber sur un nombre deja existant
+	i++;
+}
+
+
+
+    // Générer un nombre aléatoire entre 0 et 51
+   /* int rnd = rand() % 52;
+
+	type = (rng / 13);
+	card = (rng % 14);
+	printf("nb_rand:%d\ntype:%d\ncard:%d\n", rng, type, card);*/
+	//if (((rng / 13) - 1) = 0)
+	//mlx_put_image_to_window(var->mlx, var->win, var->spade[((rng - 1) % 13)]->img, (((0 - 1) % 13) * (var->card_length + 20)), 0);
+	/*int	i;
 	i = -1;
 	while (++i < 13)
 	{
@@ -152,7 +188,7 @@ void	init(t_var *var)
 		mlx_put_image_to_window(var->mlx, var->win, var->heart[i]->img,  (i * (var->card_length + 20)), (1 * (var->card_length + 50)));
 		mlx_put_image_to_window(var->mlx, var->win, var->club[i]->img,  (i * (var->card_length + 20)), (2 * (var->card_length + 50)));
 		mlx_put_image_to_window(var->mlx, var->win, var->diams[i]->img,  (i * (var->card_length + 20)), (3 * (var->card_length + 50)));
-	}
+	}*/
 
 }
 
@@ -264,7 +300,7 @@ int	main(void)
 		printf("Failed to initialize MLX\n");
 		return (1);
 	}
-	printf("MLX initialized successfully!%d_%d\n", (52/13), (52%13));
+	printf("MLX initialized successfully!\n");
 	var.win = mlx_new_window(var.mlx, 1600, 1000, "Solitaire");
 	if (!var.win)
 	{
