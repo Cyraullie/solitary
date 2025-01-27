@@ -12,7 +12,7 @@ INCLUDES	= include/solitary.h
 SRCDIR		= srcs/
 OBJDIR		= objs/
 
-SRCS		= $(addprefix $(SRCDIR), main.c)
+SRCS		= $(addprefix $(SRCDIR), main.c init_img.c)
 OBJS 		= $(SRCS:$(SRCDIR)%.c=$(OBJDIR)%.o)
 
 # Colors for output

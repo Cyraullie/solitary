@@ -6,7 +6,7 @@
 /*   By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:45:09 by cgoldens          #+#    #+#             */
-/*   Updated: 2025/01/26 15:37:02 by cgoldens         ###   ########.fr       */
+/*   Updated: 2025/01/27 17:30:43 by cgoldens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	handle_keypress(int keycode, t_var *var)
 	printf("Key pressed: %d\n", keycode);
 
 	(void)var;
-	if (keycode == 65307) // Escape key (code clavier standard pour "echap")
+	if (keycode == 65307)
 	{
 		printf("Escape key pressed. Exiting program...\n");
 		mlx_destroy_window(var->mlx, var->win);
@@ -26,184 +26,63 @@ int	handle_keypress(int keycode, t_var *var)
 	return (0);
 }
 
-void	add_floor(t_var *var, int color)
-{
-	int	x;
-	int	y;
 
-	y = 0;
-	while (y < var->card_height) // Hauteur de la fenêtre
-	{
-		x = 0;
-		while (x < var->card_length) // Largeur de la fenêtre
-		{
-			mlx_pixel_put(var->mlx, var->win, x, y, color);
-			x++;
-		}
-		y++;
-	}
-}
-
-void	init_diams(t_var **var)
-{
-	int		i;
-	char	*path;
-
-	i = 0;
-	while (++i <= 13)
-	{
-		(*var)->diams[i - 1] = malloc(sizeof(t_card));
-		path = ft_strjoin("./textures/card-diamonds-", ft_itoa(i));
-		path = ft_strjoin(path, ".xpm");
-		(*var)->diams[i - 1]->img = mlx_xpm_file_to_image((*var)->mlx, path,
-				&((*var)->card_length), &((*var)->card_height));
-		(*var)->diams[i - 1]->back = mlx_xpm_file_to_image((*var)->mlx,
-				"./textures/card-back2.xpm", &((*var)->card_length),
-				&((*var)->card_height));
-		(*var)->diams[i - 1]->id = i;
-		(*var)->diams[i - 1]->is_face_up = true;
-	}
-}
-
-void	init_heart(t_var **var)
-{
-	int		i;
-	char	*path;
-
-	i = 0;
-	while (++i <= 13)
-	{
-		(*var)->heart[i - 1] = malloc(sizeof(t_card));
-		path = ft_strjoin("./textures/card-hearts-", ft_itoa(i));
-		path = ft_strjoin(path, ".xpm");
-		(*var)->heart[i - 1]->img = mlx_xpm_file_to_image((*var)->mlx, path,
-				&((*var)->card_length), &((*var)->card_height));
-		(*var)->heart[i - 1]->back = mlx_xpm_file_to_image((*var)->mlx,
-				"./textures/card-back2.xpm", &((*var)->card_length),
-				&((*var)->card_height));
-		(*var)->heart[i - 1]->id = i;
-		(*var)->heart[i - 1]->is_face_up = true;
-	}
-}
-
-void	init_spade(t_var **var)
-{
-	int		i;
-	char	*path;
-
-	i = 0;
-	while (++i <= 13)
-	{
-		(*var)->spade[i - 1] = malloc(sizeof(t_card));
-		path = ft_strjoin("./textures/card-spades-", ft_itoa(i));
-		path = ft_strjoin(path, ".xpm");
-		(*var)->spade[i - 1]->img = mlx_xpm_file_to_image((*var)->mlx,
-				path, &((*var)->card_length), &((*var)->card_height));
-		(*var)->spade[i - 1]->back = mlx_xpm_file_to_image((*var)->mlx,
-				"./textures/card-back2.xpm", &((*var)->card_length),
-				&((*var)->card_height));
-		(*var)->spade[i - 1]->id = i;
-		(*var)->spade[i - 1]->is_face_up = true;
-	}
-}
-
-void	init_club(t_var **var)
-{
-	int		i;
-	char	*path;
-
-	i = 0;
-	while (++i <= 13)
-	{
-		(*var)->club[i - 1] = malloc(sizeof(t_card));
-		path = ft_strjoin("./textures/card-clubs-", ft_itoa(i));
-		path = ft_strjoin(path, ".xpm");
-		(*var)->club[i - 1]->img = mlx_xpm_file_to_image((*var)->mlx, path,
-				&((*var)->card_length), &((*var)->card_height));
-		(*var)->club[i - 1]->back = mlx_xpm_file_to_image((*var)->mlx,
-				"./textures/card-back2.xpm", &((*var)->card_length),
-				&((*var)->card_height));
-		(*var)->club[i - 1]->id = i;
-		(*var)->club[i - 1]->is_face_up = true;
-	}
-}
-
-void	init_img(t_var **var)
-{
-	init_diams(var);
-	init_club(var);
-	init_heart(var);
-	init_spade(var);
-}
 
 int	check_tab(int *tab, int nb)
 {
 	int	i;
 
 	i = -1;
-	
+	while (tab[++i] != -1)
+	{
+		if (tab[i] == nb)
+			return (1);
+	}
+	return (0);
+}
+
+void	init_rng(t_var **var)
+{
+	int	i;
+	int	rng;
+
+	i = 0;
+	(*var)->rnd_draft = ft_calloc(sizeof(int), 53);
+	(*var)->rnd_draft[i] = -1;
+	while (i < 52)
+	{
+		rng = rand() % 52;
+		if (!check_tab((*var)->rnd_draft, rng))
+		{
+			(*var)->rnd_draft[i] = rng;
+			(*var)->rnd_draft[i + 1] = -1;
+			i++;
+		}
+	}
 }
 
 void	init(t_var *var)
 {
 	int	type;
 	int	card;
-	int tab[52];
-	var->card_height = 144;
-	var->card_length = 96;
-	var->screen_height = 144;
+	int	i;
+
+	srand(time(NULL));
+	var->screen_height = 1000;
 	var->screen_length = 1600;
 	init_img(&var);
-	//add_floor(var, GREEN);
-
-	int i;
-	int rng;
-	
-	i = 0;
-    srand(time(NULL));
-while (i < 12)
-{
-	rng = rand() % 52;
-
-	tab[i] = rng;
-	tab[i + 1] = -1;
-	type = (rng / 13);
-	card = (rng % 14);
-	printf("nb_rand:%d\ntype:%d\ncard:%d\n", rng, type, card);
-	if (type == 0)
-		mlx_put_image_to_window(var->mlx, var->win, var->spade[card]->img, (card * (var->card_length + 20)), 0);
-	if (type == 1)
-		mlx_put_image_to_window(var->mlx, var->win, var->heart[card]->img, (card * (var->card_length + 20)),  (1 * (var->card_length + 50)));
-	if (type == 2)
-		mlx_put_image_to_window(var->mlx, var->win, var->club[card]->img, (card * (var->card_length + 20)),  (2 * (var->card_length + 50)));
-	if (type == 3)
-		mlx_put_image_to_window(var->mlx, var->win, var->diams[card]->img, (card * (var->card_length + 20)),  (3 * (var->card_length + 50)));
-	//TODO checker si le rng et tomber sur un nombre deja existant
-	i++;
-}
-
-
-
-    // Générer un nombre aléatoire entre 0 et 51
-   /* int rnd = rand() % 52;
-
-	type = (rng / 13);
-	card = (rng % 14);
-	printf("nb_rand:%d\ntype:%d\ncard:%d\n", rng, type, card);*/
-	//if (((rng / 13) - 1) = 0)
-	//mlx_put_image_to_window(var->mlx, var->win, var->spade[((rng - 1) % 13)]->img, (((0 - 1) % 13) * (var->card_length + 20)), 0);
-	/*int	i;
-	i = -1;
-	while (++i < 13)
+	add_floor(var);
+	init_rng(&var);
+	//TODO virer ca 
+	i = 52;
+	while (--i > 40)
 	{
-		mlx_put_image_to_window(var->mlx, var->win, var->spade[i]->img,  (i * (var->card_length + 20)), 0);
-		mlx_put_image_to_window(var->mlx, var->win, var->heart[i]->img,  (i * (var->card_length + 20)), (1 * (var->card_length + 50)));
-		mlx_put_image_to_window(var->mlx, var->win, var->club[i]->img,  (i * (var->card_length + 20)), (2 * (var->card_length + 50)));
-		mlx_put_image_to_window(var->mlx, var->win, var->diams[i]->img,  (i * (var->card_length + 20)), (3 * (var->card_length + 50)));
-	}*/
-
+		type = (var->rnd_draft[i] / 13);
+		card = (var->rnd_draft[i] % 13);
+		mlx_put_image_to_window(var->mlx, var->win, var->draft[type][card].front.img, (card * (var->draft[type][card].front.length + 20)) + 20, (type * (var->draft[type][card].front.height + 50)) + 50);
+	}
 }
-
+/*
 int	mouse_press(int button, int x, int y, t_var *var)
 {
 	int i;
@@ -298,7 +177,7 @@ int	mouse_press(int button, int x, int y, t_var *var)
 	}
 	return (0);
 }
-
+*/
 
 
 
@@ -320,7 +199,7 @@ int	main(void)
 		return (1);
 	}
 	init(&var);
-	mlx_mouse_hook(var.win, mouse_press, &var);
+	//mlx_mouse_hook(var.win, mouse_press, &var);
 	mlx_key_hook(var.win, handle_keypress, &var);
 	mlx_loop(var.mlx);
 	return (0);
