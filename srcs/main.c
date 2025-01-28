@@ -6,7 +6,7 @@
 /*   By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:45:09 by cgoldens          #+#    #+#             */
-/*   Updated: 2025/01/27 17:30:43 by cgoldens         ###   ########.fr       */
+/*   Updated: 2025/01/28 17:26:57 by cgoldens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,61 +27,6 @@ int	handle_keypress(int keycode, t_var *var)
 }
 
 
-
-int	check_tab(int *tab, int nb)
-{
-	int	i;
-
-	i = -1;
-	while (tab[++i] != -1)
-	{
-		if (tab[i] == nb)
-			return (1);
-	}
-	return (0);
-}
-
-void	init_rng(t_var **var)
-{
-	int	i;
-	int	rng;
-
-	i = 0;
-	(*var)->rnd_draft = ft_calloc(sizeof(int), 53);
-	(*var)->rnd_draft[i] = -1;
-	while (i < 52)
-	{
-		rng = rand() % 52;
-		if (!check_tab((*var)->rnd_draft, rng))
-		{
-			(*var)->rnd_draft[i] = rng;
-			(*var)->rnd_draft[i + 1] = -1;
-			i++;
-		}
-	}
-}
-
-void	init(t_var *var)
-{
-	int	type;
-	int	card;
-	int	i;
-
-	srand(time(NULL));
-	var->screen_height = 1000;
-	var->screen_length = 1600;
-	init_img(&var);
-	add_floor(var);
-	init_rng(&var);
-	//TODO virer ca 
-	i = 52;
-	while (--i > 40)
-	{
-		type = (var->rnd_draft[i] / 13);
-		card = (var->rnd_draft[i] % 13);
-		mlx_put_image_to_window(var->mlx, var->win, var->draft[type][card].front.img, (card * (var->draft[type][card].front.length + 20)) + 20, (type * (var->draft[type][card].front.height + 50)) + 50);
-	}
-}
 /*
 int	mouse_press(int button, int x, int y, t_var *var)
 {
@@ -185,6 +130,7 @@ int	main(void)
 {
 	t_var	var;
 
+	srand(time(NULL));
 	var.mlx = mlx_init();
 	if (!var.mlx)
 	{
@@ -192,7 +138,7 @@ int	main(void)
 		return (1);
 	}
 	printf("MLX initialized successfully!\n");
-	var.win = mlx_new_window(var.mlx, 1600, 1000, "Solitaire");
+	var.win = mlx_new_window(var.mlx, 1150, 1000, "Solitaire");
 	if (!var.win)
 	{
 		fprintf(stderr, "Failed to create a window\n");
