@@ -6,12 +6,11 @@
 /*   By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:13:10 by cgoldens          #+#    #+#             */
-/*   Updated: 2025/01/28 16:14:29 by cgoldens         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:59:37 by cgoldens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/solitary.h"
-
 
 int	check_tab(int *tab, int nb)
 {

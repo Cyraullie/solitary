@@ -6,12 +6,11 @@
 /*   By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 13:36:38 by cgoldens          #+#    #+#             */
-/*   Updated: 2025/01/28 17:23:14 by cgoldens         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:59:29 by cgoldens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/solitary.h"
-
 
 char	*create_path(int type, int nb)
 {
@@ -31,7 +30,6 @@ char	*create_path(int type, int nb)
 	return (path);
 }
 
-
 void	init_cards(t_var **var, int type, int card, char *path)
 {
 	(*var)->draft[type][card].front.img = malloc(sizeof(void *));
@@ -50,7 +48,6 @@ void	init_cards(t_var **var, int type, int card, char *path)
 	else
 		(*var)->draft[type][card].is_red = false;
 }
-
 
 void	init_img(t_var **var)
 {
@@ -117,4 +114,3 @@ void	add_floor(t_var *var)
 		y += 100;
 	}
 }
-
