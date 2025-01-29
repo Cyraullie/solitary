@@ -6,7 +6,7 @@
 /*   By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:11:12 by cgoldens          #+#    #+#             */
-/*   Updated: 2025/01/28 16:37:26 by cgoldens         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:56:31 by cgoldens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_var {
 	int		screen_length;
 	t_img	background;
 	t_card	draft[4][13];
+	t_card	play[7][25];
 	t_img	placement[4];
 	int		*rnd_draft;
 }				t_var;
@@ -64,5 +65,9 @@ void	init_rng(t_var **var);
 void	init(t_var *var);
 void	place_card(t_var **var);
 void	init_placement(t_var **var);
+void	display_play(t_var **var, int line, int col, int x);
+void	display_draft(t_var **var, int x);
+void	display_placement(t_var **var);
+
 
 #endif
