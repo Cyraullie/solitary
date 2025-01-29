@@ -6,7 +6,7 @@
 /*   By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 13:36:38 by cgoldens          #+#    #+#             */
-/*   Updated: 2025/01/29 13:59:29 by cgoldens         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:26:28 by cgoldens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ char	*create_path(int type, int nb)
 	if (type == 0)
 		path = ft_strjoin(path, "hearts-");
 	else if (type == 1)
-		path = ft_strjoin(path, "clubs-");
+		path = ft_strjoin(path, "spades-");
 	else if (type == 2)
 		path = ft_strjoin(path, "diamonds-");
 	else if (type == 3)
-		path = ft_strjoin(path, "spades-");
+		path = ft_strjoin(path, "clubs-");
 	path = ft_strjoin(path, ft_itoa(nb));
 	path = ft_strjoin(path, ".xpm");
 	return (path);
@@ -80,15 +80,15 @@ void	init_placement(t_var **var)
 			&(*var)->placement[0].length,
 			&(*var)->placement[0].height);
 	(*var)->placement[1].img = mlx_xpm_file_to_image((*var)->mlx,
-			"./textures/card-diamonds.xpm",
+			"./textures/card-spades.xpm",
 			&(*var)->placement[1].length,
 			&(*var)->placement[1].height);
 	(*var)->placement[2].img = mlx_xpm_file_to_image((*var)->mlx,
-			"./textures/card-clubs.xpm",
+			"./textures/card-diamonds.xpm",
 			&(*var)->placement[2].length,
 			&(*var)->placement[2].height);
 	(*var)->placement[3].img = mlx_xpm_file_to_image((*var)->mlx,
-			"./textures/card-spades.xpm",
+			"./textures/card-clubs.xpm",
 			&(*var)->placement[3].length,
 			&(*var)->placement[3].height);
 }
@@ -102,10 +102,10 @@ void	add_floor(t_var *var)
 	var->background.img = mlx_xpm_file_to_image(var->mlx,
 			"./textures/background.xpm",
 			&var->background.length, &var->background.height);
-	while (y < var->screen_height)
+	while (y < WIN_HEIGHT)
 	{
 		x = 0;
-		while (x < var->screen_length)
+		while (x < WIN_WIDTH)
 		{
 			mlx_put_image_to_window(var->mlx, var->win,
 				var->background.img, x, y);
