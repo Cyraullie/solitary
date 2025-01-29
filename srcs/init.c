@@ -6,7 +6,7 @@
 /*   By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:13:38 by cgoldens          #+#    #+#             */
-/*   Updated: 2025/01/28 17:27:07 by cgoldens         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:46:41 by cgoldens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	init_rng(t_var **var)
 		}
 	}
 }
-
+//TODO faire le drag and drop
 
 void	init(t_var *var)
 {
@@ -41,12 +41,4 @@ void	init(t_var *var)
 	add_floor(var);
 	init_rng(&var);
 	place_card(&var);
-	//TODO virer ca 
-	/*i = 52;
-	while (--i > 40)
-	{
-		type = (var->rnd_draft[i] / 13);
-		card = (var->rnd_draft[i] % 13);
-		mlx_put_image_to_window(var->mlx, var->win, var->draft[type][card].front.img, (card * (var->draft[type][card].front.length + 20)) + 20, (type * (var->draft[type][card].front.height + 50)) + 50);
-	}*/
 }
