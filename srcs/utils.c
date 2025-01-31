@@ -1,42 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/28 16:13:38 by cgoldens          #+#    #+#             */
-/*   Updated: 2025/01/31 10:33:46 by cgoldens         ###   ########.fr       */
+/*   Created: 2025/01/29 15:51:09 by cgoldens          #+#    #+#             */
+/*   Updated: 2025/01/30 13:54:25 by cgoldens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/solitary.h"
 
-void	init_rng(t_var **var)
+void	put_img_front(t_var *var, t_card card, int pos_x, int pos_y)
 {
-	int	i;
-	int	rng;
-
-	i = 0;
-	(*var)->rnd_draft = ft_calloc(sizeof(int), 53);
-	(*var)->rnd_draft[i] = -1;
-	while (i < 52)
-	{
-		rng = rand() % 52;
-		if (!check_tab((*var)->rnd_draft, rng))
-		{
-			(*var)->rnd_draft[i] = rng;
-			(*var)->rnd_draft[i + 1] = -1;
-			i++;
-		}
-	}
+	mlx_put_image_to_window(var->mlx, var->win,
+		card.front.img, pos_x, pos_y);
+	card.pos_x = pos_x;
+	card.pos_y = pos_y;
 }
-//TODO faire le drag and drop
 
-void	init(t_var *var)
+void	put_img_back(t_var *var, t_card card, int pos_x, int pos_y)
 {
-	init_img(&var);
-	add_floor(var);
-	init_rng(&var);
-	place_card(&var);
+	mlx_put_image_to_window(var->mlx, var->win,
+		card.back.img, pos_x, pos_y);
+	card.pos_x = pos_x;
+	card.pos_y = pos_y;
 }
